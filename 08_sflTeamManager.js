@@ -39,7 +39,7 @@ function Player(name, position, offense, defense) {
 
 
 
-let createPlayer = function () {
+let createPlayers = function () {
 
   if (team.length < 3) {
 
@@ -78,17 +78,18 @@ let createPlayer = function () {
         team.push(player);
         console.log(`${answers.name} is a sub!\n\n`)
       }
-      createPlayer();
+      createPlayers();
     }); //close answers
+
   } else {
     for (var i = 0; i < team.length; i++) {
       team[i].printStats();
     }
     playGame();
   }
-}; // close createPlayer
+}; // close createPlayers
 
-createPlayer();
+createPlayers();
 
 
 let gameCount = 1;
@@ -113,11 +114,11 @@ let playGame = function () {
 
   if (gameCount < 6) {
     //play game
-    console.log(`Playing game number ${gameCount}.\nMy team's numbers:\nOffense: ${startersOffTotal}  Defense: ${startersDefTotal}\nThe opponent's numbers:\nOffense: ${opntOff}  Defense: ${opntDef}`);
+    console.log(`Playing game number ${gameCount}.\nMy team's numbers:\nOffense: ${startersOffTotal}  Defense: ${startersDefTotal}\nThe opponent's numbers:\nOffense: ${opntOff}  Defense: ${opntDef}\n`);
 
     if (startersOffTotal >= opntOff) {
       score++;
-      console.log(`Great Offense! We scored. The net score is ${score}.`)
+      console.log(`Great Offense! We scored. The net score is ${score}.\n\n`)
     }
 
     if (startersDefTotal < opntDef) {
@@ -125,37 +126,53 @@ let playGame = function () {
       console.log(`Bad defense! They scored. The net score is ${score}.`)
     }
     gameCount++;
+    //makeSubstitution();
     playGame();
 
   } else {
-    if (score >= 1) {
-      console.log(`Great game. We win. The net score was ${score}`);
-
-    } else {
-      console.log(`Bad game. We lose. The net score was ${score}`)
-    }
-
+    endGame();
   }
 
 }//close playGame
+
+
+// let makeSubstitution = function () {
+//   inquirer.prompt([
+//     {
+//       name: 'swap',
+//       type: 'rawlist',
+//       choices: starters.map(player => player.name),
+//       message: 'Would you like to make a substitution?'
+//     }
+//   ]).then(function (answers) {
+//     console.log(answers.swap);
+//     playGame();
+//   })
+
+// } //close makeSubstitution
+
 
 let endGame = function () {
   if (score >= 1) {
     console.log(`Great game. We win. The net score was ${score}`);
-    for (var i = 0; i < starters.length; i++) {
-      starters[i].goodGame();
-      playAgain();
-    }
+    starters.forEach(player => player.goodGame());
+    playAgain();
 
-  } else {
-    console.log(`Bad game. We lose. The net score was ${score}`);
-    for (var i = 0; i < starters.length; i++) {
-      starters[i].badGame();
-      playAgain();
-    }
-
+  } else if (score = 0) {
+    console.log(`We tied! The net score was ${score}`);
+    playAgain();
   }
-}//close playGame
+  else {
+    console.log(`Bad game. We lose. The net score was ${score}`);
+    starters.forEach(player => player.badGame());
+    playAgain();
+  }
+
+}//close endGame
+
+
+
+
 
 let playAgain = function () {
   inquirer.prompt([
@@ -167,7 +184,12 @@ let playAgain = function () {
     }
   ]).then(function (answers) {
     if (answers.again) {
-      playGame();
+      starters = [];
+      subs = [];
+      team = [];
+      gameCount = 1;
+      score = 0;
+      createPlayers();
     } else {
       console.log("Thanks for playing!")
     }
