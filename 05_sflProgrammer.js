@@ -22,7 +22,7 @@ let sue = new Programmer("Sue", "TA", 48, "JavaScript");
 sue.experience = 0.75
 
 console.log(sue);
-//sue.printStats();
+sue.printStats();
 sue.keepWorking();
 
 
@@ -31,9 +31,39 @@ class Student {
     this.name = name;
     this.age = age;
     this.subject = subject;
-  };
+  }
+  takeSubjectR() {
+    console.log(`${this.name} is taking ${this.subject} during the fall semester.`);
+  }
+
+  set classSubject(value) {
+    this.subject = value;
+  }
+
+  get classSubject() {
+    console.log(`${this.name} is taking ${this.subject} during the fall semester.`);
+  }
 }
+
+
 
 let mina = new Student("Mina", "31", "Coding");
 
-//console.log(mina);
+// console.log("Mina", mina);
+// mina.takeSubjectR();
+// mina.classSubject = "Economics";
+// mina.classSubject;
+
+
+class Athlete extends Student {
+  constructor(name, sport, age, subject) {
+    super(name, age, subject);
+    this.sport = sport;
+  }
+}
+
+let nick = new Athlete("Nick", "hockey", 18, "Biology");
+
+// console.log("Nick", nick);
+// nick.classSubject;
+
